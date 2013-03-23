@@ -26,8 +26,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    
 }
+
+-(void)loadWebPageWithString:(NSString *)urlString{
+    NSURL *url =[NSURL URLWithString:urlString];
+    NSLog(@"%@",urlString);
+    NSURLRequest *request =[NSURLRequest requestWithURL:url];
+    webview=[[UIWebView alloc]initWithFrame:CGRectMake(0, 0, 320, self.view.bounds.size.height)];
+    webview.delegate=self;
+    webview.backgroundColor=[UIColor blackColor];
+    webview.scalesPageToFit=YES;
+    [self.view addSubview:webview];
+    [webview loadRequest:request];
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    self.navigationController.navigationBar.topItem.title=_TopItemTitle;
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {

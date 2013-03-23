@@ -8,6 +8,9 @@
 
 #import "MainViewController.h"
 #import "ServeViewController.h"
+#import "ProjectViewController.h"
+#import "Constants.h"
+
 
 static NSUInteger kNumberOfPages = 6;
 static NSUInteger insert = 25;
@@ -16,7 +19,7 @@ static NSUInteger imagewidth = 58;
 
 
 @interface MainViewController ()
-
+- (void)setupViews;
 @property (nonatomic,strong)  UIPageControl *pageControl;
 @property (nonatomic,strong)  UIScrollView  *scrollView;
 
@@ -39,71 +42,39 @@ static NSUInteger imagewidth = 58;
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"upFrame"] forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.topItem.title=@"首页";
 	// Do any additional setup after loading the view.
-    
-    UIImageView *overview1=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"overview1"]];
-    UIImageView *overview2=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"iverview2"]];
-    UIImageView *overview3=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"iverview3"]];
-    UIImageView *overview4=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"iverview4"]];
-    UIImageView *overview5=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"iverview5"]];
-    UIImageView *overview6=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"iverview6"]];
-
-    
-    UIScrollView *scrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 199)];
-    scrollView.backgroundColor=[UIColor blackColor];
-    scrollView.pagingEnabled = YES;
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width * kNumberOfPages, scrollView.frame.size.height);
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.scrollsToTop = NO;
-    scrollView.delegate = self;
-    overview2.frame=CGRectMake(320*1, 0, 320, 199);
-    overview3.frame=CGRectMake(320*2, 0, 320, 199);
-    overview4.frame=CGRectMake(320*3, 0, 320, 199);
-    overview5.frame=CGRectMake(320*4, 0, 320, 199);
-    overview6.frame=CGRectMake(320*5, 0, 320, 199);
-    [scrollView addSubview:overview1];
-    [scrollView addSubview:overview2];
-    [scrollView addSubview:overview3];
-    [scrollView addSubview:overview4];
-    [scrollView addSubview:overview5];
-    [scrollView addSubview:overview6];
-    
-    
-
-    
-   // self.scrollView=scrollView;
-   // [self.view addSubview:self.scrollView];
-    
+  
     UIImageView *backgroundImageView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"mainPageBackground"]];
     backgroundImageView.frame=CGRectMake(0,-44, 320,  self.view.frame.size.height);
     
     [self.view addSubview:backgroundImageView];
-    [self.view addSubview:scrollView];
+
     
-    UIButton *button1=[UIButton buttonWithType:UIButtonTypeCustom];
+    [self setupViews];
+
+    
+    button1=[UIButton buttonWithType:UIButtonTypeCustom];
     [button1 setBackgroundImage:[UIImage imageNamed:@"mainVisit"] forState:UIControlStateNormal];
     button1.backgroundColor=[UIColor clearColor];
     button1.frame=CGRectMake(45, self.view.bounds.size.height*0.45, 58, 56);
-    [button1 addTarget:self action:@selector(button1Pressend) forControlEvents:UIControlEventTouchDown];
+    [button1 addTarget:self action:@selector(projectButtonPressend:) forControlEvents:UIControlEventTouchDown];
 
     
     UIImageView *visitCharView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"visitChar"]];
     visitCharView.frame=CGRectMake(45,self.view.bounds.size.height*0.6, 61, 14);
     
     
-    UIButton *button2=[UIButton buttonWithType:UIButtonTypeCustom];
+    button2=[UIButton buttonWithType:UIButtonTypeCustom];
     [button2 setBackgroundImage:[UIImage imageNamed:@"mainTrade"] forState:UIControlStateNormal];
     button2.backgroundColor=[UIColor clearColor];
     button2.frame=CGRectMake(45+imagewidth+insert, self.view.bounds.size.height*0.45, 58, 56);
-    [button2 addTarget:self action:@selector(button2Pressend) forControlEvents:UIControlEventTouchDown];
+    [button2 addTarget:self action:@selector(projectButtonPressend:) forControlEvents:UIControlEventTouchDown];
 
     
     UIImageView *tradeCharView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"tradeChar"]];
     tradeCharView.frame=CGRectMake(45+imagewidth+insert, self.view.bounds.size.height*0.6, 61, 14);
     
-    UIButton *button3=[UIButton buttonWithType:UIButtonTypeCustom];
+    button3=[UIButton buttonWithType:UIButtonTypeCustom];
     [button3 setBackgroundImage:[UIImage imageNamed:@"mainSearch"] forState:UIControlStateNormal];
     button3.backgroundColor=[UIColor clearColor];
     button3.frame=CGRectMake(45+imagewidth*2+insert*2, self.view.bounds.size.height*0.45, 58, 56);
@@ -121,13 +92,37 @@ static NSUInteger imagewidth = 58;
     
 }
 
--(void)button1Pressend{
+- (void)setupViews
+{
+    SGFocusImageItem *item1 = [[SGFocusImageItem alloc] initWithTitle:nil image:[UIImage imageNamed:@"overview1"] tag:0] ;
+    SGFocusImageItem *item2 = [[SGFocusImageItem alloc] initWithTitle:nil image:[UIImage imageNamed:@"overview2"] tag:1] ;
+    SGFocusImageItem *item3 = [[SGFocusImageItem alloc] initWithTitle:nil image:[UIImage imageNamed:@"overview3"] tag:2] ;
+    SGFocusImageItem *item4 = [[SGFocusImageItem alloc] initWithTitle:nil image:[UIImage imageNamed:@"overview4"] tag:4] ;
+    SGFocusImageItem *item5 = [[SGFocusImageItem alloc] initWithTitle:nil image:[UIImage imageNamed:@"overview5"] tag:5] ;
+    SGFocusImageItem *item6 = [[SGFocusImageItem alloc] initWithTitle:nil image:[UIImage imageNamed:@"overview6"] tag:6] ;
+
+    SGFocusImageFrame *imageFrame = [[SGFocusImageFrame alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 198.0)
+                                                                    delegate:self
+                                                             focusImageItems:item1, item2, item3, item4,item5,item6, nil];
+    imageFrame.backgroundColor=[UIColor blackColor];
+    [self.view addSubview:imageFrame];
     
 }
 
--(void)button2Pressend{
-    
+-(void)projectButtonPressend:(UIButton *)sender
+{
+    ProjectViewController *projectViewController=[[ProjectViewController alloc]init];
+    if (sender == button1) {
+        projectViewController.urlString =kVisitURL;
+        projectViewController.TopItemText=@"参展项目";
+    }else if (sender == button2)
+    {
+        projectViewController.urlString =kTradeURL;
+        projectViewController.TopItemText=@"交易项目";
+    }
+    [[self navigationController]pushViewController:projectViewController animated:YES];
 }
+
 
 -(void)button3Pressend
 {
@@ -135,6 +130,9 @@ static NSUInteger imagewidth = 58;
     [[self navigationController]pushViewController:serveViewController animated:YES];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    self.navigationController.navigationBar.topItem.title=@"首页";
+}
 
 - (void)didReceiveMemoryWarning
 {

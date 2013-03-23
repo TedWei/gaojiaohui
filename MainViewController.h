@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SGFocusImageFrame.h"
+#import "SGFocusImageItem.h"
 
-@interface MainViewController : UIViewController<UIScrollViewDelegate>
+@interface MainViewController : UIViewController<UIScrollViewDelegate,SGFocusImageFrameDelegate>
+{
+    UIButton *button1;
+    UIButton *button2;
+    UIButton *button3;
+}
 
 @end

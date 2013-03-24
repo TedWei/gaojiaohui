@@ -9,11 +9,11 @@
 #import "ProjectDataItem.h"
 
 @implementation ProjectDataItem
-@synthesize name,title;
+@synthesize title,name,parentParserDelegate;
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
-    NSLog(@"startElement %@",elementName);
+ //   NSLog(@"startElement %@",elementName);
     if ([elementName isEqual:@"DWMC_CN"]) {
         currentString=[[NSMutableString alloc]init];
         self.name=currentString;
@@ -32,6 +32,8 @@
 -(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
     [currentString appendString:string];
+    NSLog(@"title is %@",currentString);
+
 }
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName

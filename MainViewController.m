@@ -114,6 +114,7 @@ static NSUInteger imagewidth = 58;
     ProjectViewController *projectViewController=[[ProjectViewController alloc]init];
     if (sender == button1) {
         projectViewController.urlString =kVisitURL;
+        
         projectViewController.TopItemText=@"参展项目";
     }else if (sender == button2)
     {

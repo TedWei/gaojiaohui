@@ -13,13 +13,11 @@
 #import "HeadView.h"
 #import "FootView.h"
 
-@interface ProjectViewController ()
-
--(void)addChildViewController:(UIViewController *)childController;
-@end
 
 @implementation ProjectViewController
-@synthesize urlString;
+
+@synthesize urlString,footview;
+
 
 -(id)initWithStyle:(UITableViewStyle)style
 {
@@ -27,7 +25,7 @@
     self=[super initWithStyle:style];
     if (self) {
         
-        [self getData];
+      //  [self getData];
     }
     return self;
 }
@@ -63,23 +61,33 @@
 #pragma GetTheData
 
 -(void)getData{
+    pageNumber +=1;
+    NSString *urls=[urlString stringByAppendingFormat:@"?page=%d",pageNumber];
+    NSLog(@"url string is %@",urls);
+
     xmlData=[[NSMutableData alloc]init];
-    NSURL *url=[NSURL URLWithString:urlString];
+    NSURL *url=[NSURL URLWithString:urls];
     NSURLRequest *req=[NSURLRequest requestWithURL:url];
     NSLog(@"%@",req);
     connection=[[NSURLConnection alloc]initWithRequest:req delegate:self startImmediately:YES];
     
 }
 
+
+
+
+
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
-    NSLog(@"%@",elementName);
+   // NSLog(@"%@",elementName);
     if ([elementName isEqual:@"impproject"]) {
         impprojectdata=[[impProjectData  alloc]init];
         [impprojectdata setParentParserDelegate:self];
         [parser setDelegate:impprojectdata];
     }
 }
+
+
 
 
 
@@ -95,7 +103,7 @@
     [parser setDelegate:self];
     [parser parse];
     xmlData =nil;
-    connection=nil;
+    connection =nil;
     [self.tableView reloadData];
    // NSLog(@"%@ is %@",[projectdata CZXMMC_CN],[projectdata DWMC_CN]);
     
@@ -103,9 +111,9 @@
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
- //   NSString *errorString=[NSString stringWithFormat:@"getData failed:%@",[error localizedDescription]];
-  //  UIAlertView *av=[[UIAlertView alloc]initWithTitle:@"Error" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-  //  [av show];
+    NSString *errorString=[NSString stringWithFormat:@"getData failed:%@",[error localizedDescription]];
+    UIAlertView *av=[[UIAlertView alloc]initWithTitle:@"Error" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [av show];
     
 }
 
@@ -120,9 +128,11 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    FootView *footview=[[FootView alloc]init];
+    footview=[[FootView alloc]init];
+    [footview.button addTarget:self action:@selector(getData) forControlEvents:UIControlEventTouchDown];
     return footview;
 }
+
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -156,7 +166,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
-    NSLog(@"impprojectdata.items is %@",impprojectdata.items);
+  //  NSLog(@"impprojectdata.items is %@",impprojectdata.items);
     ProjectDataItem *item=[[impprojectdata items] objectAtIndex:indexPath.row];
     cell.textLabel.text=item.title;
     cell.detailTextLabel.text=item.name;

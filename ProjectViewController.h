@@ -8,18 +8,21 @@
 
 #import <UIKit/UIKit.h>
 @class impProjectData;
+@class FootView;
 
-@interface ProjectViewController : UITableViewController<UITableViewDataSource,UITableViewDelegate,NSURLConnectionDelegate,NSURLConnectionDataDelegate,NSXMLParserDelegate>
+@interface ProjectViewController : UITableViewController<NSXMLParserDelegate>
 {
     NSURLConnection *connection;
     NSMutableData *xmlData;
     impProjectData *impprojectdata;
+    
+    NSInteger pageNumber;
+
 }
 
 @property (nonatomic,strong)  NSString *urlString;
 @property (nonatomic,strong)  NSString *TopItemText;
-
-
+@property (nonatomic,strong)  FootView *footview;
 
 -(void)getData;
 @end

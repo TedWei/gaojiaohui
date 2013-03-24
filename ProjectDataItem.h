@@ -10,14 +10,10 @@
 
 @interface ProjectDataItem : NSObject<NSXMLParserDelegate>
 {
-    NSString *name;
-    NSString *title;
     NSMutableString *currentString;
-    id parentParserDelegate;
-    
 }
 
-@property (nonatomic,assign) id parentParserDelegate;
+@property (nonatomic,weak) id parentParserDelegate;
 @property (nonatomic,strong) NSString *name;
 @property (nonatomic,strong) NSString *title;
 

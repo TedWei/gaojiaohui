@@ -10,4 +10,7 @@
 
 @interface FootView : UIView
 
+@property (nonatomic,strong) UIButton *button;
+
+
 @end

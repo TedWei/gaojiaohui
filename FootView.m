@@ -8,15 +8,9 @@
 
 #import "FootView.h"
 
-@interface FootView()
-{
-    UIButton *getMoreButton;
-}
-
-
-@end
-
 @implementation FootView
+
+@synthesize button;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -32,12 +26,10 @@
 {
     self =[super init];
     if (self) {
-        UIButton *button=[UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button=[UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setBackgroundImage:[UIImage imageNamed:@"nextButton"] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(getmoredata) forControlEvents:UIControlEventTouchDown];
         [button setTitle:@"显示更多" forState:UIControlStateNormal];
-        getMoreButton=button;
-        [self addSubview:getMoreButton];
+        [self addSubview:button];
     }
     return self;
 }
@@ -45,11 +37,7 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    getMoreButton.frame=CGRectMake(10, 5, self.bounds.size.width-20, self.bounds.size.height-10);
-}
--(void)getmoredata
-{
-    
+    button.frame=CGRectMake(10, 5, self.bounds.size.width-20, self.bounds.size.height-10);
 }
 /*
 // Only override drawRect: if you perform custom drawing.

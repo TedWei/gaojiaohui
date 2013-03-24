@@ -16,7 +16,7 @@
 @implementation impProjectData
 
 
-@synthesize items;
+@synthesize items,parentParserDelegate;
 
 -(id)init
 {
@@ -29,14 +29,15 @@
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
-    NSLog(@"did start parser:%@", elementName);
+  //  NSLog(@"did start parser:%@", elementName);
     if ([elementName isEqual:@"project"]){
         
         ProjectDataItem *project=[[ProjectDataItem alloc]init];
         [project setParentParserDelegate:self];
+
         [parser setDelegate:project];
         [items addObject:project];
-        
+                
     }
     
 
@@ -44,15 +45,15 @@
 
 -(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
-    NSLog(@"found character:%@", string);
+ //   NSLog(@"found character:%@", string);
     [currentString appendString:string];
 }
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
-    NSLog(@"did end parser:%@", elementName);
+  //  NSLog(@"did end parser:%@", elementName);
      currentString=nil;
-    if ([elementName isEqual:@"improject"]) {
+    if ([elementName isEqual:@"impproject"]) {
         [parser setDelegate:parentParserDelegate];
         NSLog(@"items.count is %d",items.count);
 

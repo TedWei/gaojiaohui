@@ -12,10 +12,8 @@
 @interface impProjectData : NSObject<NSXMLParserDelegate>
 {
     NSMutableString *currentString;
-    id parentParserDelegate;
-    NSMutableArray *items;
 
 }
-@property (nonatomic,assign) id parentParserDelegate;
-@property (nonatomic,readonly) NSMutableArray *items;
+@property (nonatomic,weak) id parentParserDelegate;
+@property (nonatomic, readonly, strong) NSMutableArray *items;
 @end

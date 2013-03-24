@@ -20,7 +20,7 @@
     }else if ([elementName isEqual:@"CZXMMC_CN"]){
         currentString=[[NSMutableString alloc]init];
         self.title=currentString;
-    }else if ([elementName isEqual:@"CHNAME"]){
+    }else if ([elementName isEqual:@"CNNAME"]){
         currentString=[[NSMutableString alloc]init];
         self.name=currentString;
     }else if ([elementName isEqual:@"COMPANY"]){

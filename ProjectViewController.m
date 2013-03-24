@@ -19,7 +19,7 @@
 @end
 
 @implementation ProjectViewController
-@synthesize impprojectdata,urlString;
+@synthesize urlString;
 
 -(id)initWithStyle:(UITableViewStyle)style
 {
@@ -82,6 +82,7 @@
 }
 
 
+
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [xmlData appendData:data];
@@ -89,9 +90,7 @@
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    NSString *xmlCheck=[[NSString alloc]initWithData:xmlData encoding:NSUTF8StringEncoding];
-    NSLog(@"%@",xmlCheck);
-    
+   
     NSXMLParser *parser=[[NSXMLParser alloc]initWithData:xmlData];
     [parser setDelegate:self];
     [parser parse];
@@ -135,16 +134,27 @@
     return 45;
 }
 
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[impprojectdata items]count];
+    return impprojectdata.items.count;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    static NSString *cellIdentifier=@"UITableViewCell";
+    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"UITableViewCell"];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     NSLog(@"impprojectdata.items is %@",impprojectdata.items);
     ProjectDataItem *item=[[impprojectdata items] objectAtIndex:indexPath.row];

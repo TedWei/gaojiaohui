@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+@class ProjectDataItem;
 
 @interface impProjectData : NSObject<NSXMLParserDelegate>
 {
-    id parentParserDelegate;
     NSMutableString *currentString;
+    id parentParserDelegate;
+    NSMutableArray *items;
+
 }
 @property (nonatomic,assign) id parentParserDelegate;
 @property (nonatomic,readonly) NSMutableArray *items;

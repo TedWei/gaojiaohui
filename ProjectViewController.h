@@ -16,7 +16,6 @@
     impProjectData *impprojectdata;
 }
 
-@property (nonatomic,strong) impProjectData *impprojectdata;
 @property (nonatomic,strong)  NSString *urlString;
 @property (nonatomic,strong)  NSString *TopItemText;
 

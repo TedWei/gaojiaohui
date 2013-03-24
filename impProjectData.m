@@ -9,6 +9,10 @@
 #import "impProjectData.h"
 #import "ProjectDataItem.h"
 
+@interface impProjectData ()
+
+@end
+
 @implementation impProjectData
 
 
@@ -27,13 +31,15 @@
 {
     NSLog(@"did start parser:%@", elementName);
     if ([elementName isEqual:@"project"]){
+        
         ProjectDataItem *project=[[ProjectDataItem alloc]init];
         [project setParentParserDelegate:self];
         [parser setDelegate:project];
         [items addObject:project];
-        project = nil;
-        NSLog(@"items.count is %d",items.count);
+        
     }
+    
+
 }
 
 -(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
@@ -46,8 +52,10 @@
 {
     NSLog(@"did end parser:%@", elementName);
      currentString=nil;
-    if ([elementName isEqual:@"impproject"]) {
+    if ([elementName isEqual:@"improject"]) {
         [parser setDelegate:parentParserDelegate];
+        NSLog(@"items.count is %d",items.count);
+
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "HeadView.h"
+#import "PopoverViewController.h"
 
 @interface HeadView()
 {
@@ -34,6 +35,7 @@
     self=[super init];
     if (self) {
         self.backgroundColor=[UIColor grayColor];
+
         UIButton *button1=[UIButton buttonWithType:UIButtonTypeRoundedRect];
         button1=[[UIButton alloc]initWithFrame:CGRectZero];
         [button1 setBackgroundImage:[UIImage imageNamed:@"popoverButton"] forState:UIControlStateNormal];
@@ -63,12 +65,13 @@
 
 -(void)popSealectionView:(UIButton *)sender
 {
-    if (sender == selectionButton1) {
-        
+    if (sender == selectionButton1){
+
     }else if (sender == selectionButton2){
         
     }
 }
+
 
 -(void)layoutSubviews
 {

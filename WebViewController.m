@@ -26,7 +26,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 -(void)loadWebPageWithString:(NSString *)urlString{
@@ -45,7 +49,6 @@
 -(void)viewDidAppear:(BOOL)animated{
     self.navigationController.navigationBar.topItem.title=_TopItemTitle;
 }
-
 
 
 - (void)didReceiveMemoryWarning

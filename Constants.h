@@ -10,14 +10,14 @@
 #define _________Constants_h
 
 // 参展项目和交易项目列表接口地址
-#define kVisitURL        @"http://dev.xinyanyuan.com.cn/Mobile/proSearch_czxm.jsp"
-#define kTradeURL        @"http://dev.xinyanyuan.com.cn/Mobile/proSearch_jyxm.jsp"
+#define kVisitURL        @"http://59.40.77.235/Mobile/proSearch_czxm.php"
+#define kTradeURL        @"http://59.40.77.235/Mobile/proSearch_jyxm.php"
 // 加载参展和交易列表的下一页，如获取交易项目第二页：http://dev.xinyanyuan.com.cn/Mobile/proSearch_jyxm.jsp?page=2
 
 
 // 某一参展项目和交易项目的详细信息接口地址
-#define kVisitDetailURL  @"http://dev.xinyanyuan.com.cn/Mobile/proSearch_czxm_display.jsp"
-#define kTradeDetailURL  @"http://dev.xinyanyuan.com.cn/Mobile/proSearch_jyxm_display.jsp"
+#define kVisitDetailURL  @"http://59.40.77.235/Mobile/proSearch_czxm_display.php"
+#define kTradeDetailURL  @"http://59.40.77.235/Mobile/proSearch_jyxm_display.php"
 // 点击获取某一项项目的详细信息，获取ID号追加到后面，如获取某一交易项目信息：http://dev.xinyanyuan.com.cn/Mobile/proSearch_jyxm_display.jsp?project_id=3
 
 

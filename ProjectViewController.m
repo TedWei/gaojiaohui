@@ -12,6 +12,7 @@
 #import "ProjectDataItem.h"
 #import "HeadView.h"
 #import "FootView.h"
+#import "ProJectDetailViewController.h"
 
 
 @implementation ProjectViewController
@@ -22,13 +23,13 @@
 -(id)initWithStyle:(UITableViewStyle)style
 {
     
-    self=[super initWithStyle:style];
+    self=[super initWithStyle:UITableViewStylePlain];
     if (self) {
-        
-      //  [self getData];
     }
     return self;
 }
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -42,30 +43,53 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIBarButtonItem *refreshButton=[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(getData)];
+    self.navigationItem.rightBarButtonItem=refreshButton;
     
+    self.refreshControl=[[UIRefreshControl alloc]init];
+    NSAttributedString *string=[[NSAttributedString alloc]initWithString:@"Refreshing...."];
+    self.refreshControl.attributedTitle=string;
+    self.refreshControl.tintColor=[UIColor redColor];
+    [self.refreshControl addTarget:self action:@selector(getData) forControlEvents:UIControlEventAllEvents];
+    [self getData];
 }
+
+
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self getData];
+    [self.navigationController setToolbarHidden:YES animated:YES];
+
+
 }
 -(void)viewDidAppear:(BOOL)animated
 {
     self.navigationController.navigationBar.topItem.title=self.TopItemText;
+
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-    impprojectdata = nil;
+     pageNumber = 0;
 }
+
+#pragma startRefreshingData
+
+
+
+
 
 #pragma GetTheData
 
 -(void)getData{
+    [self.refreshControl beginRefreshing];
     pageNumber +=1;
     NSString *urls=[urlString stringByAppendingFormat:@"?page=%d",pageNumber];
     NSLog(@"url string is %@",urls);
-
+    if (!xmlData) {
     xmlData=[[NSMutableData alloc]init];
+    }
     NSURL *url=[NSURL URLWithString:urls];
     NSURLRequest *req=[NSURLRequest requestWithURL:url];
     NSLog(@"%@",req);
@@ -81,7 +105,9 @@
 {
    // NSLog(@"%@",elementName);
     if ([elementName isEqual:@"impproject"]) {
+        if (!impprojectdata) {
         impprojectdata=[[impProjectData  alloc]init];
+        }
         [impprojectdata setParentParserDelegate:self];
         [parser setDelegate:impprojectdata];
     }
@@ -95,6 +121,7 @@
 {
     [xmlData appendData:data];
 }
+
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -111,19 +138,34 @@
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    NSString *errorString=[NSString stringWithFormat:@"getData failed:%@",[error localizedDescription]];
-    UIAlertView *av=[[UIAlertView alloc]initWithTitle:@"Error" message:errorString delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [self.refreshControl endRefreshing];
+    NSString *errorString;
+    NSString *errorTitle=@"获取错误";
+    
+    if ([[error localizedDescription] isEqualToString:@"The request timed out."]) {
+        errorString=@"连接超时";
+    }else if ([errorString isEqualToString:@"Could not connect to the server."]) {
+        errorString=@"无法连接到服务器";
+    }
+    
+    NSLog(@"error is %@",errorString);
+    UIAlertView *av=[[UIAlertView alloc]initWithTitle:errorTitle message:errorString delegate:self cancelButtonTitle:@"确认" otherButtonTitles: nil];
+    
     [av show];
     
 }
 
+
+
+
 #pragma tableview
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    HeadView *headview=[[HeadView alloc]init];
-    return headview;
-}
+
+//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    HeadView *headview=[[HeadView alloc]init];
+//    return headview;
+//}
 
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -134,10 +176,10 @@
 }
 
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 45;
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 45;
+//}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -149,6 +191,8 @@
     return 1;
 }
 
+
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return impprojectdata.items.count;
@@ -157,6 +201,16 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    ProJectDetailViewController *detailView=[[ProJectDetailViewController alloc]init];
+    detailView.project_ID = indexPath.row+1;
+    if ([urlString isEqual:kVisitURL]) {
+        detailView.projectDetailUrlString =kVisitDetailURL;
+        
+    }else if([urlString isEqual:kTradeURL]){
+        detailView.projectDetailUrlString = kTradeDetailURL;
+    }
+    
+    [self.navigationController pushViewController:detailView animated:YES];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -167,9 +221,12 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
   //  NSLog(@"impprojectdata.items is %@",impprojectdata.items);
+  
     ProjectDataItem *item=[[impprojectdata items] objectAtIndex:indexPath.row];
+    
     cell.textLabel.text=item.title;
     cell.detailTextLabel.text=item.name;
+    [self.refreshControl endRefreshing];
     return cell;
 }
 

@@ -15,6 +15,7 @@
     UIButton *button1;
     UIButton *button2;
     UIButton *button3;
+    UIButton *button4;
 }
 
 @end

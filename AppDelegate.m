@@ -8,8 +8,13 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
+#import "SinaWeibo.h"
+#import "ProJectDetailViewController.h"
+
 
 @implementation AppDelegate
+
+@synthesize sinaweibo;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -20,14 +25,29 @@
     UINavigationController *nav=[[UINavigationController alloc]initWithRootViewController:mainViewController];
     self.window.rootViewController=nav;
     
+    
+    
     [self.window makeKeyAndVisible];
+    
+    ProJectDetailViewController *detailView=[[ProJectDetailViewController alloc]init];
+    sinaweibo = [[SinaWeibo alloc] initWithAppKey:kAppKey appSecret:kAppSecret appRedirectURI:kAppRedirectURI andDelegate:detailView];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *sinaweiboInfo = [defaults objectForKey:@"SinaWeiboAuthData"];
+    if ([sinaweiboInfo objectForKey:@"AccessTokenKey"] && [sinaweiboInfo objectForKey:@"ExpirationDateKey"] && [sinaweiboInfo objectForKey:@"UserIDKey"])
+    {
+        sinaweibo.accessToken = [sinaweiboInfo objectForKey:@"AccessTokenKey"];
+        sinaweibo.expirationDate = [sinaweiboInfo objectForKey:@"ExpirationDateKey"];
+        sinaweibo.userID = [sinaweiboInfo objectForKey:@"UserIDKey"];
+    }
+    
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+
+    [self.sinaweibo applicationDidBecomeActive];
+
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -44,6 +64,16 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [self.sinaweibo handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [self.sinaweibo handleOpenURL:url];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

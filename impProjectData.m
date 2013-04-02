@@ -29,7 +29,7 @@
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
-  //  NSLog(@"did start parser:%@", elementName);
+    NSLog(@"did start parser:%@", elementName);
     if ([elementName isEqual:@"project"]){
         
         ProjectDataItem *project=[[ProjectDataItem alloc]init];

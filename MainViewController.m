@@ -41,6 +41,10 @@ static NSUInteger imagewidth = 58;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    
+    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"upFrame"] forBarMetrics:UIBarMetricsDefault];
 	// Do any additional setup after loading the view.
   
@@ -82,6 +86,8 @@ static NSUInteger imagewidth = 58;
     
     UIImageView *serveCharView=[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"serveChar"]];
     serveCharView.frame=CGRectMake(45+imagewidth*2+insert*2, self.view.bounds.size.height*0.6, 61, 14);
+        
+
     
     [self.view addSubview:button1];
     [self.view addSubview:button2];

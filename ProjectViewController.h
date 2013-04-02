@@ -10,7 +10,7 @@
 @class impProjectData;
 @class FootView;
 
-@interface ProjectViewController : UITableViewController<NSXMLParserDelegate>
+@interface ProjectViewController : UITableViewController<NSXMLParserDelegate,UIPopoverControllerDelegate>
 {
     NSURLConnection *connection;
     NSMutableData *xmlData;
